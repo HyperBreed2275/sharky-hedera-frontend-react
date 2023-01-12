@@ -25,3 +25,4 @@ yarn-error.log*
 firebase.json
 .firebase/hosting.YnVpbGQ.cache
 yarn.lock
+.git_old

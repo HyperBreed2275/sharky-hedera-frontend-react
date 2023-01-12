@@ -31,7 +31,7 @@ function Home() {
                                 fontWeight: '700',
                                 margin: '0',
                             }}>
-                                BORROW & LEND AGAINST YOUR NFTS, INSTANTLY
+                                RECEIVE INSTANT LIQUIDITY FOR YOUR NFT
                             </p>
                         </Box>
                         <Box sx={{
@@ -52,15 +52,15 @@ function Home() {
                             },
                         }}>
                             <Button variant='outlined'
-                                onClick={() => { history.push('/lend') }}
+                                onClick={() => { history.push('/borrow') }}
                                 sx={{
                                     color: RED_DEFAULT_COLOR,
                                     marginRight: '20px',
                                 }}>
-                                LEND
+                                BORROW
                             </Button>
                             <Button variant='contained'
-                                onClick={() => { history.push('/borrow') }}
+                                onClick={() => { history.push('/loans') }}
                                 sx={{
                                     color: WHITE_DEFAULT_COLOR,
                                     backgroundColor: RED_DEFAULT_COLOR,
@@ -68,7 +68,7 @@ function Home() {
                                         backgroundColor: RED_DEFAULT_COLOR,
                                     },
                                 }}>
-                                BORROW
+                                LOANS
                             </Button>
                         </Box>
                     </Grid>
@@ -78,7 +78,7 @@ function Home() {
                         }}>
                         <Box sx={{
                             position: 'absolute',
-                            bottom: '50px',
+                            bottom: '100px',
                             left: '100px',
                             border: '3px solid',
                             borderColor: GRAY_DEFAULT_COLOR,
@@ -92,26 +92,20 @@ function Home() {
                                 color: BLACK_DEFAULT_COLOR,
                                 fontWeight: '700',
                             }}>
-                                Sharky
+                                Club Finance
                             </p>
                             <p style={{
                                 fontSize: '22px',
                                 fontStyle: 'italic',
                                 color: GRAY_DEFAULT_COLOR,
                             }}>
-                                RELEASED ON HEDERA, JANUARY 2023.
+                                BETA VERSION, FEBRUARY 2023.
                             </p>
                             <p style={{
                                 fontSize: '24px',
                                 color: BLACK_DEFAULT_COLOR,
                             }}>
-                                Make money as a lender.
-                            </p>
-                            <p style={{
-                                fontSize: '24px',
-                                color: BLACK_DEFAULT_COLOR,
-                            }}>
-                                Get cash as a borrower.
+                                NFT collateralized loans.
                             </p>
                         </Box>
                     </Grid>

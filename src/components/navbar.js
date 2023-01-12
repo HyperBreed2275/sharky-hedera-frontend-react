@@ -1,15 +1,25 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { Box, Button, Chip, IconButton } from '@mui/material';
-import { Star } from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { Box, Button, IconButton } from '@mui/material';
 
-import { RED_DEFAULT_COLOR, YELLOW_DEFAULT_COLOR } from '../default/color';
-import { DISPLAY_COLUMN_STYLE, DISPLAY_ROW_STYLE, NAVBAR_LINK_BUTTON_STYLE, NAVBAR_TEXT_STYLE, SOCIAL_LINK_BUTTON_STYLE } from '../default/style';
+import { DISPLAY_COLUMN_STYLE, DISPLAY_ROW_STYLE, NAVBAR_LINK_BUTTON_STYLE, SOCIAL_LINK_BUTTON_STYLE } from '../default/style';
 import { MAX_WRAPPER_WIDTH, NAVBAR_HEIGHT } from '../default/value';
 import HashPackConnectButton from './hashpackConnectButton';
+import { BLACK_DEFAULT_COLOR, RED_DEFAULT_COLOR } from '../default/color';
+
+const pathList = ['', 'home', 'borrow', 'loans'];
 
 function Navbar() {
     let history = useHistory();
+    const location = useLocation();
+    const [navSelected, setNavSelected] = useState('');
+
+    useEffect(() => {
+        let pathName = location.pathname.replace('/', '');
+        if (!pathList.includes(pathName))
+            pathName = '';
+        setNavSelected(pathName);
+    }, [location]);
 
     return (
         <>
@@ -53,40 +63,26 @@ function Navbar() {
                             }
                         }}>
                             <Button variant='text'
-                                onClick={() => { history.push('/lend') }}
-                                sx={NAVBAR_LINK_BUTTON_STYLE}>
-                                LEND
-                            </Button>
-                            <Button variant='text'
-                                onClick={() => { history.push('/offers') }}
-                                sx={NAVBAR_LINK_BUTTON_STYLE}>
-                                OFFERS
-                            </Button>
-                            <p style={{
-                                ...NAVBAR_TEXT_STYLE,
-                                ...{ margin: '0 10px', }
-                            }}>/</p>
-                            <Button variant='text'
                                 onClick={() => { history.push('/borrow') }}
-                                sx={NAVBAR_LINK_BUTTON_STYLE}>
+                                sx={{
+                                    ...NAVBAR_LINK_BUTTON_STYLE,
+                                    ...{
+                                        color: navSelected === 'borrow' ? RED_DEFAULT_COLOR : BLACK_DEFAULT_COLOR,
+                                    }
+                                }}>
                                 BORROW
                             </Button>
                             <Button variant='text'
                                 onClick={() => { history.push('/loans') }}
-                                sx={NAVBAR_LINK_BUTTON_STYLE}>
+                                sx={{
+                                    ...NAVBAR_LINK_BUTTON_STYLE,
+                                    ...{
+                                        marginRight: '20px',
+                                        color: navSelected === 'loans' ? RED_DEFAULT_COLOR : BLACK_DEFAULT_COLOR,
+                                    }
+                                }}>
                                 LOANS
                             </Button>
-                            <Chip icon={<Star />} label='100'
-                                sx={{
-                                    margin: '0 15px',
-                                    backgroundColor: YELLOW_DEFAULT_COLOR,
-                                    color: RED_DEFAULT_COLOR,
-                                    fontSize: '16px',
-                                    fontWeight: '700',
-                                    '& svg': {
-                                        color: `${RED_DEFAULT_COLOR} !important`,
-                                    },
-                                }} />
                             <HashPackConnectButton />
                         </Box>
                         {/* social links */}
