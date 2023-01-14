@@ -1,4 +1,5 @@
 export const NETWORK_TYPE = 'mainnet';
+export const LOAN_NFT_IDS = ['0.0.1593425'];
 
 export const CTC_TYPE_COLLECTION = 'collection';
 export const CTC_TYPE_A_POOL = 'availablePool';

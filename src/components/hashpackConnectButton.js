@@ -5,10 +5,13 @@ import { BLACK_DEFAULT_COLOR, RED_DEFAULT_COLOR } from '../default/color';
 import HashPackConnectModal from './HashPackConnectModal';
 import { useHashConnect } from '../api/HashConnectAPIProvider.tsx';
 
+// import { associateCheck } from '../api/web3Functions';
+// const tempTokenId = '0.0.1182820';
+
 const HashPackConnectButton = () => {
     const [walletConnectModalViewFlag, setWalletConnectModalViewFlag] = useState(false);
 
-    const { walletData, installedExtensions, connect, disconnect } = useHashConnect();
+    const { walletData, installedExtensions, connect, disconnect, associateToken } = useHashConnect();
     const { accountIds } = walletData;
 
     const onClickWalletConnectModalClose = () => {
@@ -40,6 +43,32 @@ const HashPackConnectButton = () => {
             );
         }
     };
+
+    // token auto associate
+    // useEffect(() => {
+    //     console.log('HashPackConnectButton useEffect log - 1 : ', accountIds);
+    //     if (accountIds?.length > 0) {
+    //         autoAssociate(tempTokenId);
+    //     }
+    // }, [accountIds])
+
+    // const autoAssociate = async (tokenId) => {
+    //     const associateState = await associateCheck(accountIds[0], tokenId);
+    //     if (!associateState.result) {
+    //         console.log('Something wrong with Mirror Network.');
+    //         return;
+    //     }
+    //     if (associateState.associated) {
+    //         console.log('Already associated.');
+    //         return;
+    //     }
+    //     const associateResult = await associateToken(tokenId);
+    //     if (associateResult) {
+    //         console.log('Associate successful.');
+    //         return;
+    //     }
+    //     console.log('Associate failed.');
+    // }
 
     return (
         <>

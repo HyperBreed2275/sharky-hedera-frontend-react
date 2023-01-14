@@ -9,7 +9,8 @@ import {
     AccountAllowanceApproveTransaction,
     Timestamp,
     ScheduleCreateTransaction,
-    TransactionId
+    TransactionId,
+    TokenAssociateTransaction
 } from '@hashgraph/sdk';
 
 import { NETWORK_TYPE } from '../default/value';
@@ -282,6 +283,34 @@ export default function HashConnectProvider({
         return false;
     }
 
+    const associateToken = async (tokenId_a) => {
+        console.log('associateToken log - 1 : ', tokenId_a);
+
+        const accountId = saveData.accountIds[0];
+        const provider = hashConnect.getProvider(netWork, saveData.topic, accountId);
+        const signer = hashConnect.getSigner(provider);
+        const tokenId = TokenId.fromString(tokenId_a);
+
+        const associateTx = await new TokenAssociateTransaction()
+            .setAccountId(accountId)
+            .setTokenIds([tokenId]);
+        if (!associateTx) return false;
+        const associateFreeze = await associateTx.freezeWithSigner(signer);
+        if (!associateFreeze) return false;
+        const associateSign = await associateFreeze.signWithSigner(signer);
+        if (!associateSign) return false;
+        const associateSubmit = await associateSign.executeWithSigner(signer);
+        if (!associateSubmit) return false;
+        const associateRx = await provider.getTransactionReceipt(associateSubmit.transactionId);
+
+        console.log('associateToken log - 2 : ', associateRx);
+
+        if (associateRx.status._code === 22)
+            return true;
+
+        return false;
+    }
+
     return (
         <HashConnectAPIContext.Provider
             value={{
@@ -291,6 +320,7 @@ export default function HashConnectProvider({
                 disconnect,
                 allowanceSendNft,
                 allowanceSendHbar,
+                associateToken,
             }}>
             {children}
         </HashConnectAPIContext.Provider>
