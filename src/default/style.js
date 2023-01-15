@@ -100,3 +100,32 @@ export const TABLE_BODY_B_MINI_TEXT_STYLE = {
     margin: '0',
     color: GRAY_DEFAULT_COLOR,
 }
+
+// laon setting dialog styles
+export const INPUT_WRAPPER_STYLE = {
+    ...DISPLAY_COLUMN_STYLE,
+    ...{
+        width: '250px',
+        marginTop: '15px',
+        alignItems: 'center',
+        '& .MuiSlider-root': {
+            width: '230px',
+            height: '2px',
+            margin: '0 10px',
+        },
+        '& p': {
+            width: '230px',
+            margin: '0 10px 5px',
+            fontSize: '16px',
+            color: BLACK_DEFAULT_COLOR,
+            fontWeight: '400',
+        },
+    }
+};
+
+export const DIALOG_BUTTON_STYLE = {
+    borderRadius: '0',
+    padding: '5px 10px',
+    marginLeft: '10px',
+    textTransform: 'none',
+}

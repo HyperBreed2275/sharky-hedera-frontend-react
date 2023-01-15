@@ -9,8 +9,7 @@ import {
     AccountAllowanceApproveTransaction,
     Timestamp,
     ScheduleCreateTransaction,
-    TransactionId,
-    TokenAssociateTransaction
+    TransactionId
 } from '@hashgraph/sdk';
 
 import { NETWORK_TYPE } from '../default/value';
@@ -229,86 +228,35 @@ export default function HashConnectProvider({
         initializeAll();
     };
 
+    const allowanceTransaction = async (receiverId_a, hbarAmount_a, tokenId_a, serialNum_a) => {
+        console.log('allowanceTransaction log - 1 : ', receiverId_a, hbarAmount_a, tokenId_a, serialNum_a);
 
-    const allowanceSendNft = async (receiverId_, tokenId_, serialNum_) => {
-        // console.log('************************ sendHbarAndNftToTreasury 0 : ');
+        try {
+            const accountId = saveData.accountIds[0];
+            const provider = hashConnect.getProvider(netWork, saveData.topic, accountId);
+            const signer = hashConnect.getSigner(provider);
+            const receiverId = AccountId.fromString(receiverId_a);
 
-        const _accountId = saveData.accountIds[0];
-        const _provider = hashConnect.getProvider(netWork, saveData.topic, _accountId);
-        const _signer = hashConnect.getSigner(_provider);
-        const _treasuryId = AccountId.fromString(receiverId_);
-        const _nft = new NftId(TokenId.fromString(tokenId_), serialNum_);
+            let allowanceTx = new AccountAllowanceApproveTransaction();
+            if (hbarAmount_a > 0) {
+                allowanceTx.approveHbarAllowance(accountId, receiverId, hbarAmount_a);
+            }
+            if (serialNum_a !== 0) {
+                const nft = new NftId(TokenId.fromString(tokenId_a), serialNum_a);
+                allowanceTx.approveTokenNftAllowance(nft, accountId, receiverId);
+            }
+            const allowanceFreeze = await allowanceTx.freezeWithSigner(signer);
+            const allowanceSign = await allowanceFreeze.signWithSigner(signer);
+            const allowanceSubmit = await allowanceSign.executeWithSigner(signer);
+            const allowanceRx = await provider.getTransactionReceipt(allowanceSubmit.transactionId);
 
+            if (allowanceRx.status._code != 22)
+                return { result: false, error: 'Transaction failed!' };
 
-        const allowanceTx = new AccountAllowanceApproveTransaction()
-            .approveTokenNftAllowance(_nft, _accountId, _treasuryId);
-        if (!allowanceTx) return false;
-        const allowanceFreeze = await allowanceTx.freezeWithSigner(_signer);
-        if (!allowanceFreeze) return false;
-        const allowanceSign = await allowanceFreeze.signWithSigner(_signer);
-        if (!allowanceSign) return false;
-        const allowanceSubmit = await allowanceSign.executeWithSigner(_signer);
-        if (!allowanceSubmit) return false;
-        const allowanceRx = await _provider.getTransactionReceipt(allowanceSubmit.transactionId);
-
-        if (allowanceRx.status._code === 22)
-            return true;
-
-        return false;
-    }
-
-    const allowanceSendHbar = async (receiverId_, amount_) => {
-        console.log('allowanceSendHbar log - 1 : ', receiverId_, amount_);
-
-        const _accountId = saveData.accountIds[0];
-        const _provider = hashConnect.getProvider(netWork, saveData.topic, _accountId);
-        const _signer = hashConnect.getSigner(_provider);
-        const _treasuryId = AccountId.fromString(receiverId_);
-
-        const allowanceTx = new AccountAllowanceApproveTransaction().approveHbarAllowance(_accountId, _treasuryId, amount_);
-        if (!allowanceTx) return false;
-        const allowanceFreeze = await allowanceTx.freezeWithSigner(_signer);
-        if (!allowanceFreeze) return false;
-        const allowanceSign = await allowanceFreeze.signWithSigner(_signer);
-        if (!allowanceSign) return false;
-        const allowanceSubmit = await allowanceSign.executeWithSigner(_signer);
-        if (!allowanceSubmit) return false;
-        const allowanceRx = await _provider.getTransactionReceipt(allowanceSubmit.transactionId);
-
-        console.log('allowanceSendHbar log - 2 : ', allowanceRx);
-
-        if (allowanceRx.status._code === 22)
-            return true;
-
-        return false;
-    }
-
-    const associateToken = async (tokenId_a) => {
-        console.log('associateToken log - 1 : ', tokenId_a);
-
-        const accountId = saveData.accountIds[0];
-        const provider = hashConnect.getProvider(netWork, saveData.topic, accountId);
-        const signer = hashConnect.getSigner(provider);
-        const tokenId = TokenId.fromString(tokenId_a);
-
-        const associateTx = await new TokenAssociateTransaction()
-            .setAccountId(accountId)
-            .setTokenIds([tokenId]);
-        if (!associateTx) return false;
-        const associateFreeze = await associateTx.freezeWithSigner(signer);
-        if (!associateFreeze) return false;
-        const associateSign = await associateFreeze.signWithSigner(signer);
-        if (!associateSign) return false;
-        const associateSubmit = await associateSign.executeWithSigner(signer);
-        if (!associateSubmit) return false;
-        const associateRx = await provider.getTransactionReceipt(associateSubmit.transactionId);
-
-        console.log('associateToken log - 2 : ', associateRx);
-
-        if (associateRx.status._code === 22)
-            return true;
-
-        return false;
+            return { result: true };
+        } catch (error) {
+            return { result: false, error: error.message };
+        }
     }
 
     return (
@@ -318,9 +266,7 @@ export default function HashConnectProvider({
                 installedExtensions,
                 connect,
                 disconnect,
-                allowanceSendNft,
-                allowanceSendHbar,
-                associateToken,
+                allowanceTransaction,
             }}>
             {children}
         </HashConnectAPIContext.Provider>

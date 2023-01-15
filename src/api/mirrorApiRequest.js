@@ -69,7 +69,7 @@ export const getSpecificNftDataFromWallet = async (accountId_g, tokenIds_g) => {
     }
 }
 
-const getSingleNftInfo = async (tokenId_g, serialNum_g) => {
+export const getSingleNftInfo = async (tokenId_g, serialNum_g) => {
     console.log('getSingleNftInfo log - 1 : ', tokenId_g, serialNum_g);
 
     try {
@@ -107,6 +107,24 @@ const getSingleNftInfo = async (tokenId_g, serialNum_g) => {
             }
         }
         return { result: true, data: newNftInfo };
+    } catch (error) {
+        return { result: false, error: error.message };
+    }
+}
+
+export const calcServerFee = async (valueInDollar_c) => {
+    console.log('calcServerFee log - 1', valueInDollar_c);
+    try {
+        // get hbar price
+        const hbarPrice = await getRequest('https://api.coingecko.com/api/v3/simple/price?ids=hedera-hashgraph&vs_currencies=usd');
+        console.log('calcServerFee log - 2', hbarPrice);
+        if (!hbarPrice.result)
+            return { result: false, error: hbarPrice.error };
+
+        console.log('sendMintOffer log - 3', hbarPrice.data["hedera-hashgraph"].usd);
+        const serverFee = parseFloat(valueInDollar_c) / parseFloat(hbarPrice.data["hedera-hashgraph"].usd);
+
+        return { result: true, data: serverFee };
     } catch (error) {
         return { result: false, error: error.message };
     }

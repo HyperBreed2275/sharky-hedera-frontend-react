@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Grid } from '@mui/material';
 
-import { DISPLAY_ROW_STYLE, MAIN_DESCRIPTION_TEXT_STYLE, MAIN_DESCRIPTION_TITLE_STYLE, MAIN_WRAPPER_STYLE } from '../default/style';
+import { MAIN_DESCRIPTION_TEXT_STYLE, MAIN_DESCRIPTION_TITLE_STYLE, MAIN_WRAPPER_STYLE } from '../default/style';
 // import { CTC_TYPE_A_POOL, CTC_TYPE_BUTTON, CTC_TYPE_B_OFFER, CTC_TYPE_COLLECTION, CTC_TYPE_DURATION, CTC_TYPE_INTEREST } from '../default/value';
 // import CollectionTable from '../components/collectionTable';
 import { useHashConnect } from '../api/HashConnectAPIProvider.tsx';
-import { getSpecificNftDataFromWallet } from '../api/web3Functions';
+import { getSpecificNftDataFromWallet } from '../api/mirrorApiRequest';
 import { LOAN_NFT_IDS } from '../default/value';
-import { RED_DEFAULT_COLOR } from '../default/color';
 import Loading from '../components/loading';
 import StatusDisplay from '../components/statusDisplay';
 import PreLoanCard from '../components/preLoanCard';
@@ -51,7 +50,7 @@ function Borrow() {
                         Instantly take a loan against your NFTs. Escrow-free loans allows you to keep the collateral NFT in your wallet. When you accept a loan offer, a secure contract is created, freezing the NFT in-wallet. Not repaying by the due date means the lender can repossess your NFT. Successfully pay the loan in full by the expiration date to automatically thaw the NFT.
                     </p>
                 </Box>
-                <Box sx={{ margin: '64px 15px 0' }}>
+                <Box sx={{ margin: '64px 20px 0' }}>
                     {/* <CollectionTable collectionInfo={testCollectionInfo} /> */}
                     {
                         !accountIds &&
@@ -71,11 +70,13 @@ function Borrow() {
                         accountIds?.length > 0 &&
                         !loadingNftFlag &&
                         walletNfts.length > 0 &&
-                        <Grid container gap={1}>
+                        <Grid container gap={2}>
                             {
                                 walletNfts.map((item) => (
                                     <Grid item>
-                                        <PreLoanCard cardInfo={item} />
+                                        <PreLoanCard
+                                            accountId={accountIds[0]}
+                                            cardInfo={item} />
                                     </Grid>
                                 ))
                             }
