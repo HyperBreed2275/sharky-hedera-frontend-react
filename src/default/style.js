@@ -1,4 +1,4 @@
-import { BLACK_DEFAULT_COLOR, GRAY_DEFAULT_COLOR } from "./color";
+import { BLACK_DEFAULT_COLOR, GRAY_DEFAULT_COLOR, WHITE_DEFAULT_COLOR } from "./color";
 import { MAX_WRAPPER_WIDTH } from "./value";
 
 // Navbar styles
@@ -25,7 +25,8 @@ export const SOCIAL_LINK_BUTTON_STYLE = {
 
 // Main wrapper style
 export const MAIN_WRAPPER_STYLE = {
-    width: '100vw',
+    width: 'calc(100vw - 40px)',
+    padding: '0 20px',
     maxWidth: `${MAX_WRAPPER_WIDTH}px`,
     margin: '150px auto 0',
 }
@@ -50,7 +51,8 @@ export const MAIN_STATUS_WRAPPER_STYLE = {
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    height: '25vh',
+    minHeight: '25vh',
+    padding: '20px 0',
 }
 
 // default styles
@@ -101,7 +103,7 @@ export const TABLE_BODY_B_MINI_TEXT_STYLE = {
     color: GRAY_DEFAULT_COLOR,
 }
 
-// laon setting dialog styles
+// loan setting dialog styles
 export const INPUT_WRAPPER_STYLE = {
     ...DISPLAY_COLUMN_STYLE,
     ...{
@@ -128,4 +130,10 @@ export const DIALOG_BUTTON_STYLE = {
     padding: '5px 10px',
     marginLeft: '10px',
     textTransform: 'none',
+}
+
+//present loan card styles
+export const CARD_STATUS_STYLE = {
+    color: WHITE_DEFAULT_COLOR,
+    fontSize: '16px',
 }

@@ -1,6 +1,7 @@
 import { getRequest } from './apiRequests'
 import { IPFS_URL, MIRROR_NET_URL } from '../default/url';
 import { base64ToUtf8 } from './defaultFunctions';
+import { DEFAULT_SERVER_FEE_HBAR_VALUE } from '../default/value';
 
 export const associateCheck = async (accountId_a, tokenId_a) => {
     console.log('autoAssociate log - 1 : ', accountId_a, tokenId_a);
@@ -113,19 +114,19 @@ export const getSingleNftInfo = async (tokenId_g, serialNum_g) => {
 }
 
 export const calcServerFee = async (valueInDollar_c) => {
-    console.log('calcServerFee log - 1', valueInDollar_c);
+    console.log('calcServerFee log - 1 : ', valueInDollar_c);
     try {
         // get hbar price
         const hbarPrice = await getRequest('https://api.coingecko.com/api/v3/simple/price?ids=hedera-hashgraph&vs_currencies=usd');
         console.log('calcServerFee log - 2', hbarPrice);
         if (!hbarPrice.result)
-            return { result: false, error: hbarPrice.error };
+            return DEFAULT_SERVER_FEE_HBAR_VALUE;
 
         console.log('sendMintOffer log - 3', hbarPrice.data["hedera-hashgraph"].usd);
-        const serverFee = parseFloat(valueInDollar_c) / parseFloat(hbarPrice.data["hedera-hashgraph"].usd);
+        const serverFee = parseFloat(parseFloat(valueInDollar_c) / parseFloat(hbarPrice.data["hedera-hashgraph"].usd)).toFixed(3);
 
-        return { result: true, data: serverFee };
+        return serverFee;
     } catch (error) {
-        return { result: false, error: error.message };
+        return DEFAULT_SERVER_FEE_HBAR_VALUE;
     }
 }

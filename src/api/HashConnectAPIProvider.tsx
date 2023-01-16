@@ -4,12 +4,7 @@ import {
     AccountId,
     TokenId,
     NftId,
-    Hbar,
-    TransferTransaction,
     AccountAllowanceApproveTransaction,
-    Timestamp,
-    ScheduleCreateTransaction,
-    TransactionId
 } from '@hashgraph/sdk';
 
 import { NETWORK_TYPE } from '../default/value';
@@ -58,9 +53,9 @@ const INITIAL_SAVE_DATA: SaveData = {
 };
 
 let APP_CONFIG: HashConnectTypes.AppMetadata = {
-    name: 'Deragods GiftCard',
-    description: 'Deragods GiftCard',
-    icon: 'http://localhost:3000/favicon.ico',
+    name: 'SAVAGE SAILOR CLUB',
+    description: 'SAVAGE SAILOR CLUB',
+    icon: 'http://localhost:3000/images/logo.png',
 };
 
 const loadLocalData = (): null | SaveData => {
@@ -241,7 +236,7 @@ export default function HashConnectProvider({
             if (hbarAmount_a > 0) {
                 allowanceTx.approveHbarAllowance(accountId, receiverId, hbarAmount_a);
             }
-            if (serialNum_a !== 0) {
+            if (serialNum_a > 0) {
                 const nft = new NftId(TokenId.fromString(tokenId_a), serialNum_a);
                 allowanceTx.approveTokenNftAllowance(nft, accountId, receiverId);
             }
@@ -250,7 +245,7 @@ export default function HashConnectProvider({
             const allowanceSubmit = await allowanceSign.executeWithSigner(signer);
             const allowanceRx = await provider.getTransactionReceipt(allowanceSubmit.transactionId);
 
-            if (allowanceRx.status._code != 22)
+            if (allowanceRx.status._code !== 22)
                 return { result: false, error: 'Transaction failed!' };
 
             return { result: true };
@@ -275,9 +270,9 @@ export default function HashConnectProvider({
 
 const defaultProps: Partial<PropsType> = {
     metaData: {
-        name: 'Deragods GiftCard',
-        description: 'Deragods GiftCard',
-        icon: 'http://localhost:3000/favicon.ico',
+        name: 'SAVAGE SAILOR CLUB',
+        description: 'SAVAGE SAILOR CLUB',
+        icon: 'http://localhost:3000/images/logo.png',
     },
     netWork: NETWORK_TYPE,
     debug: false,
