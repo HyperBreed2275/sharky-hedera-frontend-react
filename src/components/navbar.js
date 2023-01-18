@@ -93,18 +93,24 @@ function Navbar() {
                                 margin: '15px 0 0 20px',
                             }
                         }}>
-                            <IconButton sx={{
-                                ...SOCIAL_LINK_BUTTON_STYLE,
-                                ...{ backgroundImage: 'url(./images/twitter-icon.png)', }
-                            }} />
-                            <IconButton sx={{
-                                ...SOCIAL_LINK_BUTTON_STYLE,
-                                ...{ backgroundImage: 'url(./images/discord-icon.png)', }
-                            }} />
-                            <IconButton sx={{
-                                ...SOCIAL_LINK_BUTTON_STYLE,
-                                ...{ backgroundImage: 'url(./images/zuse-icon.png)', }
-                            }} />
+                            <IconButton
+                                onClick={() => { window.open('https://twitter.com/SailorHBAR', '_blank') }}
+                                sx={{
+                                    ...SOCIAL_LINK_BUTTON_STYLE,
+                                    ...{ backgroundImage: 'url(./images/twitter-icon.png)', }
+                                }} />
+                            <IconButton
+                                onClick={() => { window.open('https://discord.gg/4fYW2cBta5', '_blank') }}
+                                sx={{
+                                    ...SOCIAL_LINK_BUTTON_STYLE,
+                                    ...{ backgroundImage: 'url(./images/discord-icon.png)', }
+                                }} />
+                            <IconButton
+                                onClick={() => { window.open('https://zuse.market/collection/0.0.1593425', '_blank') }}
+                                sx={{
+                                    ...SOCIAL_LINK_BUTTON_STYLE,
+                                    ...{ backgroundImage: 'url(./images/zuse-icon.png)', }
+                                }} />
                         </Box>
                     </Box>
                 </Box>

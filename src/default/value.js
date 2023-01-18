@@ -1,5 +1,5 @@
 export const NETWORK_TYPE = 'mainnet';
-export const TREASURY_WALLET_ID = '0.0.1699243';
+export const TREASURY_WALLET_ID = '0.0.1709318';
 export const LOAN_NFT_IDS = ['0.0.1593425'];
 
 export const FEE_USE_FLAG = false;
